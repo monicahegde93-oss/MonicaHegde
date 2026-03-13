@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monica Hegde — Alliance & Partnership Leader</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f0f0e;
+    --cream: #f5f0e8;
+    --rust: #c4541a;
+    --sand: #e8dcc8;
+    --muted: #7a7060;
+    --gold: #b8960c;
+    --deep: #1a1510;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--rust);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--rust);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    opacity: 0.5;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--deep);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 64px 56px;
+    position: relative;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -1px; bottom: 0;
+    width: 2px;
+    background: var(--rust);
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px, 7vw, 96px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--rust);
+  }
+
+  .hero-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-top: 32px;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-langs {
+    display: flex;
+    gap: 12px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .lang-tag {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.5);
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 56px;
+    background: var(--cream);
+    position: relative;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    opacity: 0;
+    animation: fadeIn 1s 1s forwards;
+  }
+
+  .stat-box {
+    background: var(--sand);
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .stat-box:hover { background: var(--rust); }
+  .stat-box:hover .stat-num,
+  .stat-box:hover .stat-label { color: white; }
+
+  .stat-box::before {
+    content: attr(data-index);
+    position: absolute;
+    top: 12px; right: 16px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    opacity: 0.4;
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.5;
+    transition: color 0.3s;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    right: 56px;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: fadeIn 1s 1.5s both;
+  }
+
+  .hero-scroll::before {
+    content: '';
+    width: 1px;
+    height: 60px;
+    background: var(--muted);
+    animation: growLine 1s 2s both;
+  }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 120px 0; }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 80px;
+  }
+
+  .section-num {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--rust);
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--sand);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .section-title em { font-style: italic; color: var(--rust); }
+
+  /* ─── TIMELINE ─── */
+  .timeline { position: relative; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--sand);
+  }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    padding: 48px 0 48px 40px;
+    border-bottom: 1px solid var(--sand);
+    position: relative;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .tl-item.visible { opacity: 1; transform: translateX(0); }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -4px; top: 56px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--rust);
+    border: 2px solid var(--cream);
+  }
+
+  .tl-meta { padding-top: 4px; }
+
+  .tl-period {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 8px;
+  }
+
+  .tl-company {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--muted);
+  }
+
+  .tl-role {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .tl-desc {
+    font-size: 11px;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .tl-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--rust);
+    border-left: 2px solid var(--rust);
+    padding-left: 16px;
+    margin-top: 8px;
+  }
+
+  /* ─── SKILLS ─── */
+  .skills-bg {
+    background: var(--deep);
+    color: var(--cream);
+  }
+
+  .skills-bg .section-title { color: var(--cream); }
+  .skills-bg .section-line { background: rgba(255,255,255,0.1); }
+  .skills-bg .section-num { color: var(--rust); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .skill-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 40px 32px;
+    transition: background 0.3s, border-color 0.3s;
+    cursor: default;
+  }
+
+  .skill-card:hover {
+    background: rgba(196, 84, 26, 0.1);
+    border-color: var(--rust);
+  }
+
+  .skill-icon {
+    font-size: 28px;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .skill-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    color: var(--cream);
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .skill-tag {
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  /* ─── BEYOND ─── */
+  .beyond-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .beyond-item {
+    background: var(--sand);
+    padding: 48px 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    transition: background 0.3s;
+  }
+
+  .beyond-item:hover { background: var(--rust); }
+  .beyond-item:hover .beyond-icon,
+  .beyond-item:hover .beyond-text,
+  .beyond-item:hover .beyond-desc { color: white; }
+
+  .beyond-icon { font-size: 32px; flex-shrink: 0; }
+
+  .beyond-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+  }
+
+  .beyond-desc {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+
+  /* ─── CONTACT ─── */
+  .contact-section {
+    background: var(--rust);
+    color: white;
+    text-align: center;
+    padding: 100px 56px;
+  }
+
+  .contact-section .section-title { color: white; font-size: clamp(48px, 6vw, 80px); }
+  .contact-section em { color: var(--cream); }
+
+  .contact-sub {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin: 32px 0 48px;
+  }
+
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--deep);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 20px 44px;
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+
+  .contact-btn:hover { background: rgba(0,0,0,0.5); }
+
+  .contact-btn-arrow {
+    width: 20px; height: 1px;
+    background: var(--rust);
+    position: relative;
+  }
+
+  .contact-btn-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -3px;
+    width: 7px; height: 7px;
+    border-right: 1px solid var(--rust);
+    border-top: 1px solid var(--rust);
+    transform: rotate(45deg);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deep);
+    padding: 32px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+  }
+
+  .footer-loc {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes growLine {
+    from { height: 0; }
+    to   { height: 60px; }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 64px 32px 48px; }
+    .hero-right { padding: 48px 32px; }
+    .stat-grid { gap: 2px; }
+    .container { padding: 0 32px; }
+    .tl-item { grid-template-columns: 1fr; gap: 16px; padding-left: 28px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .beyond-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .hero-left::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Alliance & Partnership Leader</div>
+    <h1 class="hero-name">Monica<br><em>Hegde</em></h1>
+    <div class="hero-title">
+      8.5 Years · GSI · AI Startups · DACH Market<br>
+      Tech Mahindra · Krista.ai · Nürnberg, Germany
+    </div>
+    <div class="hero-langs">
+      <span class="lang-tag">English — Native</span>
+      <span class="lang-tag">German — B2</span>
+      <span class="lang-tag">Hindi — Native</span>
+      <span class="lang-tag">Kannada — Native</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stat-grid">
+      <div class="stat-box" data-index="01">
+        <div class="stat-num">8.5</div>
+        <div class="stat-label">Years of<br>experience</div>
+      </div>
+      <div class="stat-box" data-index="02">
+        <div class="stat-num">$420M</div>
+        <div class="stat-label">Alliance portfolio<br>managed</div>
+      </div>
+      <div class="stat-box" data-index="03">
+        <div class="stat-num">120%</div>
+        <div class="stat-label">FY22 sales<br>target achieved</div>
+      </div>
+      <div class="stat-box" data-index="04">
+        <div class="stat-num">14</div>
+        <div class="stat-label">Countries<br>explored</div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">Scroll</div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE ═══ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">01 —</span>
+      <div class="section-line"></div>
+      <h2 class="section-title">The <em>Journey</em></h2>
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-meta">
+          <div class="tl-period">2016 – 2020</div>
+          <div class="tl-company">Tech Mahindra<br>× Nestlé</div>
+        </div>
+        <div>
+          <div class="tl-role">Technical &amp; Data<br>Engineering Lead</div>
+          <div class="tl-desc">
+            Revamped Nestlé's global e-recruitment portal (Taleo), managing complex SAP/CRM configurations.
+            Built end-to-end data migration ecosystem — extracting, transforming and loading sensitive agronomist data
+            into a .NET + PowerBI platform using Azure Data Factory and MySQL.
+          </div>
+          <div class="tl-highlight">SAP · Azure Data Factory · PowerBI · CRM</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-meta">
+          <div class="tl-period">2020 – 2022</div>
+          <div class="tl-company">Tech Mahindra<br>CME Vertical</div>
+        </div>
+        <div>
+          <div class="tl-role">Strategic Alliance Manager<br>North America</div>
+          <div class="tl-desc">
+            Orchestrated a $420M alliance portfolio across 18 Media &amp; Telecom enterprise accounts including AT&amp;T and Verizon.
+            Led cross-functional teams driving digital transformation, cloud migration, and AI/Data solutions.
+            Reactivated 30% of dormant ISVs to reignite pipeline growth.
+          </div>
+          <div class="tl-highlight">120% of FY22 sales target · 7-figure deals · 3-person team</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-meta">
+          <div class="tl-period">2022 – 2024</div>
+          <div class="tl-company">Krista.ai<br>Series-A Startup</div>
+        </div>
+        <div>
+          <div class="tl-role">Global Partnership &amp; Alliance Manager<br>GSI &amp; Channels — APAC, MEA</div>
+          <div class="tl-desc">
+            Built the global partner ecosystem from zero — onboarding TCS, Tech Mahindra, Wipro and 2 regional channel partners.
+            Drove $2.4M alliance pipeline across 13 GSI-sourced customers and 8 channel accounts.
+            Onboarded a billion-dollar customer (Maxim's Caters) within 2 months via structured cold outreach.
+          </div>
+          <div class="tl-highlight">$2.4M pipeline from scratch · 5 GSIs · 0→1 ecosystem build</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-meta">
+          <div class="tl-period">2025 – Present</div>
+          <div class="tl-company">Independent<br>Advisory</div>
+        </div>
+        <div>
+          <div class="tl-role">Consulting &amp; Community Advisory<br>AI &amp; Partner Ecosystems</div>
+          <div class="tl-desc">
+            Advising early-stage AI/tech founders on partner ecosystem strategy and community building.
+            Localizing BD expertise for the DACH market while deepening German language proficiency.
+          </div>
+          <div class="tl-highlight">DACH Market · AI/Tech Founders · Ecosystem Strategy</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ═══ -->
+<section class="skills-bg">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">02 —</span>
+      <div class="section-line"></div>
+      <h2 class="section-title">Core <em>Strengths</em></h2>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <span class="skill-icon">🤝</span>
+        <div class="skill-name">Alliance &amp; Partner Ecosystems</div>
+        <div class="skill-tags">
+          <span class="skill-tag">GSI Partnerships</span>
+          <span class="skill-tag">Channel Partners</span>
+          <span class="skill-tag">ISV Management</span>
+          <span class="skill-tag">Ecosystem 0→1</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">📈</span>
+        <div class="skill-name">Revenue &amp; Pipeline</div>
+        <div class="skill-tags">
+          <span class="skill-tag">MEDDIC</span>
+          <span class="skill-tag">Cold Outreach</span>
+          <span class="skill-tag">Deal Closure</span>
+          <span class="skill-tag">Forecasting</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">☁️</span>
+        <div class="skill-name">Technology Domains</div>
+        <div class="skill-tags">
+          <span class="skill-tag">AI / Automation</span>
+          <span class="skill-tag">Cloud (Azure)</span>
+          <span class="skill-tag">Data &amp; Analytics</span>
+          <span class="skill-tag">SAP / CRM</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🌍</span>
+        <div class="skill-name">Markets &amp; Verticals</div>
+        <div class="skill-tags">
+          <span class="skill-tag">DACH / Germany</span>
+          <span class="skill-tag">North America</span>
+          <span class="skill-tag">APAC / MEA</span>
+          <span class="skill-tag">Telco · FMCG · BFSI</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🗣️</span>
+        <div class="skill-name">Stakeholder Management</div>
+        <div class="skill-tags">
+          <span class="skill-tag">C-Suite Engagement</span>
+          <span class="skill-tag">Cross-functional</span>
+          <span class="skill-tag">Executive Briefings</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🎯</span>
+        <div class="skill-name">Strategy &amp; Enablement</div>
+        <div class="skill-tags">
+          <span class="skill-tag">GTM Strategy</span>
+          <span class="skill-tag">Partner Enablement</span>
+          <span class="skill-tag">Product Positioning</span>
+          <span class="skill-tag">Workshop Facilitation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BEYOND WORK ═══ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">03 —</span>
+      <div class="section-line"></div>
+      <h2 class="section-title">Beyond <em>Work</em></h2>
+    </div>
+
+    <div class="beyond-grid">
+      <div class="beyond-item">
+        <span class="beyond-icon">🤿</span>
+        <div>
+          <div class="beyond-text">Certified Scuba Diver</div>
+          <div class="beyond-desc">Level 2 Advanced — exploring oceans one dive at a time</div>
+        </div>
+      </div>
+      <div class="beyond-item">
+        <span class="beyond-icon">🎵</span>
+        <div>
+          <div class="beyond-text">Trained Classical Singer</div>
+          <div class="beyond-desc">Rooted in Indian classical tradition</div>
+        </div>
+      </div>
+      <div class="beyond-item">
+        <span class="beyond-icon">🏰</span>
+        <div>
+          <div class="beyond-text">Historical City Tour Guide</div>
+          <div class="beyond-desc">Nürnberg — storytelling as a second language</div>
+        </div>
+      </div>
+      <div class="beyond-item">
+        <span class="beyond-icon">📚</span>
+        <div>
+          <div class="beyond-text">Avid Reader</div>
+          <div class="beyond-desc">7 books in, aiming for 52 this year — one per week</div>
+        </div>
+      </div>
+      <div class="beyond-item">
+        <span class="beyond-icon">✈️</span>
+        <div>
+          <div class="beyond-text">14-Country Explorer</div>
+          <div class="beyond-desc">Latest: Egypt — chasing new perspectives globally</div>
+        </div>
+      </div>
+      <div class="beyond-item">
+        <span class="beyond-icon">🎓</span>
+        <div>
+          <div class="beyond-text">First Class Engineering Graduate</div>
+          <div class="beyond-desc">B.E. Information Science · Top of Class · VTU, India</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<div class="contact-section">
+  <h2 class="section-title">Let's Build<br><em>Something Together</em></h2>
+  <div class="contact-sub">Alliance Manager · Partnership Leader · DACH Market · Open to Opportunities</div>
+  <a href="mailto:monica@example.com" class="contact-btn">
+    Get in Touch
+    <span class="contact-btn-arrow"></span>
+  </a>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-name">Monica Hegde</div>
+  <div class="footer-loc">📍 Nürnberg, Germany · DACH Market</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  // Scroll-triggered timeline items
+  const items = document.querySelectorAll('.tl-item');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 120);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  items.forEach(el => obs.observe(el));
+
+  // Animated stat numbers
+  function animateNum(el, target, suffix) {
+    const isDecimal = target % 1 !== 0;
+    let start = 0;
+    const dur = 1800;
+    const step = ts => {
+      if (!start) start = ts;
+      const prog = Math.min((ts - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - prog, 3);
+      const val = isDecimal ? (ease * target).toFixed(1) : Math.round(ease * target);
+      el.textContent = suffix + val;
+      if (prog < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const statNums = document.querySelectorAll('.stat-num');
+  const statData = [
+    { val: 8.5, prefix: '' },
+    { val: 420, prefix: '$', suffix: 'M' },
+    { val: 120, prefix: '', suffix: '%' },
+    { val: 14, prefix: '' },
+  ];
+
+  const statObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const i = [...statNums].indexOf(e.target);
+        const d = statData[i];
+        const isDec = d.val % 1 !== 0;
+        let s = 0;
+        const dur = 1600;
+        const step = ts => {
+          if (!s) s = ts;
+          const prog = Math.min((ts - s) / dur, 1);
+          const ease = 1 - Math.pow(1 - prog, 3);
+          const val = isDec ? (ease * d.val).toFixed(1) : Math.round(ease * d.val);
+          e.target.textContent = (d.prefix || '') + val + (d.suffix || '');
+          if (prog < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        statObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  statNums.forEach(el => statObs.observe(el));
+</script>
+</body>
+</html>
